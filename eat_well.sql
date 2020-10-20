@@ -1,0 +1,36 @@
+CREATE DATABASE eat_well CHARACTER SET 'utf8';
+
+CREATE USER jbbaillet@localhost IDENTIFIED BY iotebeta85;
+GRANT ALL ON eat-well.* TO jbbaillet@localhost;
+FLUSH PRIVILEGES;
+
+USE eat_well;
+
+CREATE TABLE IF NOT EXISTS Category (
+    id_category SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR,
+)
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Substitute(
+    id_substitute SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR,
+    description VARCHAR,
+    url VARCHAR,
+)
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Shop(
+    id_shop SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR,
+)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Food(
+    id_food SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR,
+    CONSTRAINT fk_category_id REFERENCES Category(id)
+    CONSTRAINT fk_substitute_id REFERENCES Substitute(id)
+    CONSTRAINT fk_shop_id REFERENCES Shop(id)
+)
+ENGINE=InnoDB;
