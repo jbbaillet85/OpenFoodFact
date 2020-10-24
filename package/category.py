@@ -6,4 +6,5 @@ class category:
         self.id = int
         self.name = name
 
-
+    def get_category(self):
+        pass
