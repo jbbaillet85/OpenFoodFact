@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
-import jason
+import json
 
 class dataOFF:
     def __init__(self, url):
@@ -15,6 +15,6 @@ class dataOFF:
         self.j
 
 
-dataoff = dataOFF('https://fr.openfoodfacts.org/data')
-dataoff.jason
+dataoff = dataOFF('https://fr.openfoodfacts.org/categorie/popcorn/1.json')
+dataoff.json
 print(dataoff)
