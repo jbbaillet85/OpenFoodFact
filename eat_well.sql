@@ -1,8 +1,9 @@
 CREATE DATABASE eat_well CHARACTER SET 'utf8';
 
-CREATE USER jbbaillet@localhost IDENTIFIED BY iotebeta85;
+CREATE USER jbbaillet@localhost IDENTIFIED WITH mysql_native_password BY "iotebeta85";
 GRANT ALL ON eat-well.* TO jbbaillet@localhost;
 FLUSH PRIVILEGES;
+
 
 USE eat_well;
 
@@ -12,8 +13,8 @@ CREATE TABLE IF NOT EXISTS Category (
 )
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS Shop(
-    id_shop SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Store(
+    id_store SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20)
 )
 ENGINE = InnoDB;
@@ -30,22 +31,18 @@ CREATE TABLE IF NOT EXISTS Food(
     category SMALLINT NOT NULL,
     ingredients TEXT,
     nutriscore SMALLINT,
-    shop SMALLINT,
-    urlOFF URL,
-    CONSTRAINT fk_nutriscore_id FOREIGN KEY (nutriscore) REFERENCES Nutriscore(id_nutriscore)
+    store SMALLINT,
+    urlOFF TEXT(100),
+    CONSTRAINT fk_nutriscore_id FOREIGN KEY (nutriscore) REFERENCES Nutriscore(id_nutriscore),
     CONSTRAINT fk_category_id FOREIGN KEY (category) REFERENCES Category(id_category),
-    CONSTRAINT fk_shop_id FOREIGN KEY(shop) REFERENCES Shop(id_shop)
+    CONSTRAINT fk_store_id FOREIGN KEY(store) REFERENCES Store(store)
 )
 ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Substitute(
-    id_substitute SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name_food VARCHAR(12),
-    category SMALLINT,
-    ingredients TEXT,
-    nutriscore VARCHAR(1),
-    urlOFF URL
-    shop SMALLINT
-
+    id_substitute SMALLINT ,
+    id_substited SMALLINT ,
+    CONSTRAINT fk_substitute FOREIGN KEY(substitute) REFERENCES Food(id_food),
+    CONSTRAINT fk_substituted FOREIGN KEY(substituted) REFERENCES Food(id_food)
 )
 ENGINE=InnoDB;

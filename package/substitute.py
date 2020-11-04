@@ -5,8 +5,5 @@ import food
 
 class substitute:
     def __init__(self):
-        self.id = int
-        self.name_food = food
-        self.ingredients = food
-        self.nutriscore = food
-        self.lienOFF = food
+        self.food_subtitute = food
+        self.food_subtited = food
