@@ -7,7 +7,7 @@ import package.dataOFF
 class Food:
     def __init__(self):
         self.id = int
-        self.name = package.dataOFF
+        self.name_food = package.dataOFF
         self.category = package.dataOFF
         self.nutriscore = package.dataOFF
         self.store = package.dataOFF

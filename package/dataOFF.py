@@ -10,13 +10,21 @@ class DataOFF:
         self.url = url
         self.reponse = requests.get(url)
         self.data = self.reponse.json()
+        self.list_food = self.get_data()
 
-    def get_data(self, key):
+    def get_data(self):
+        list_food = []
         for product in self.data.get("products"):
-            product.get(key)
-            print(product.get(key))
+            list_food.append([
+                {"name_food": product.get("product_name_fr")},
+                {"category": product.get("categories")},
+                {"nutriscore": product.get("nutriscore_grade")},
+                {"url": product.get("url")},
+                {"store": product.get("stores")}
+            ])
+        return list_food
 
 
 if __name__ == "__main__":
     dataoff = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
-    print(dataoff.get_data("stores"))
+    print(dataoff.list_food[0])
