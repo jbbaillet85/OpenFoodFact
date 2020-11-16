@@ -8,9 +8,9 @@ class Food:
     def __init__(self):
         self.id = int
         self.name_food = package.dataOFF
-        self.category = package.dataOFF
+        self.name_category = package.dataOFF
         self.nutriscore = package.dataOFF
-        self.store = package.dataOFF
+        self.name_store = package.dataOFF
         self.url = package.dataOFF
 
 if __name__ == "__main__":

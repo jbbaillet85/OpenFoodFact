@@ -5,5 +5,7 @@ import package.dataOFF
 
 class Store:
     def __init__(self, name):
-        self.id = int
-        self.name = package.dataOFF.get_data("stores")
+        self.name_store = package.dataOFF
+
+if __name__ == "__main__":
+    pass

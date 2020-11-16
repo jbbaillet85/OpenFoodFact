@@ -4,8 +4,7 @@
 
 class category():
     def __init__(self):
-        self.id = int
-        self.name = str
+        self.name_category = str
 
 
 if __name__ == "__main__":

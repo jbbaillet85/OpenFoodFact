@@ -17,9 +17,9 @@ class DataOFF:
         for product in self.data.get("products"):
             list_food.append([
                 {"name_food": product.get("product_name_fr")},
-                {"category": product.get("categories")},
                 {"nutriscore": product.get("nutriscore_grade")},
                 {"url": product.get("url")},
+                {"category": product.get("categories")},
                 {"store": product.get("stores")}
             ])
         return list_food
@@ -27,4 +27,4 @@ class DataOFF:
 
 if __name__ == "__main__":
     dataoff = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
-    print(dataoff.list_food[0])
+    print(dataoff.list_food[0:3])
