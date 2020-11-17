@@ -26,5 +26,6 @@ class DataOFF:
 
 
 if __name__ == "__main__":
-    dataoff = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
-    print(dataoff.list_food[0:3])
+    pizzas = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
+    for data in pizzas.list_food:
+        print(data)
