@@ -3,18 +3,16 @@
 
 import mysql.connector
 
+import constants
 import dataOFF
 
 def main():
 
-    try:
-        connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "",)
+    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "iotabeta85")
         
-        cursor = connection.cursor()
+    cursor = connection.cursor()
 
-        NAME_DATABASE = "eat_well"
-
-        cursor.execute('''USE eat_well;''')
+    try:
 
         cursor.execute("""(
         CREATE TABLE IF NOT EXISTS Category (
@@ -47,24 +45,12 @@ def main():
 
         connection.commit()
 
-        list_pizzas = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
-        list_yaourts = DataOFF("https://fr.openfoodfacts.org/categorie/yaourts/1.json")
-        list_cereales_petit_dejeuner = DataOFF("https://fr.openfoodfacts.org/categorie/cereales-pour-petit-dejeuner/1.json")
-        list_plats_prepares_origine_vegetal = DataOFF("https://fr.openfoodfacts.org/categorie/plats-prepares-d-origine-vegetale/1.json")
-
-        for data in list_pizzas.list_food:
-            cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , data)
-        
-        for data in list_yaourts.list_food:
-            cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , data)
-
-        for data in list_cereales_petit_dejeuner.list_food:
-            cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , data)
-        
-        for data in list_plats_prepares_origine_vegetal.list_food:
-            cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , data)
-
-        connection.commit()
+        for category in constants.URL:
+            cursor.execute("""INSERT INTO Category(category_name) VALUES(?);""", category)
+            connection.commit()
+            for product in category:
+                cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , product)
+                connection.commit()
 
     except mysql.connector.Error as error:
         print(error)

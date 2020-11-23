@@ -7,6 +7,7 @@ import json
 
 class DataOFF:
     def __init__(self, url):
+        self.CRITERIAS = ["categories", "product_name_fr", "nutriscore_grade_fr", "url", "stores"]
         self.url = url
         self.reponse = requests.get(url)
         self.data = self.reponse.json()
@@ -23,9 +24,7 @@ class DataOFF:
                 {"store": product.get("stores")}
             ])
         return list_food
-
-
+    
 if __name__ == "__main__":
     pizzas = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
-    for data in pizzas.list_food:
-        print(data)
+    print(pizzas.list_food)
