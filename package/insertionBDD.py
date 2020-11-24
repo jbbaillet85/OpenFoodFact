@@ -3,13 +3,15 @@
 
 import mysql.connector
 
-import constants
-import dataOFF
+import category
+import food
+import store
 
 def main():
 
-    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "iotabeta85")
-        
+
+    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "")
+
     cursor = connection.cursor()
 
     try:
@@ -45,12 +47,20 @@ def main():
 
         connection.commit()
 
-        for category in constants.URL:
+        list_category = Category()
+        for category in list_category.LIST_CATEGORY:
             cursor.execute("""INSERT INTO Category(category_name) VALUES(?);""", category)
             connection.commit()
-            for product in category:
-                cursor.execute("""INSERT INTO Food (name_food, nutriscore, urlOFF, category, store) VALUES (?,?,?,?,?),""" , product)
-                connection.commit()
+        
+        list_store = Store()
+        for store in list_store.list_store:
+            cursor.execute("""INSERT INTO Category(store_id, store_name) VALUES(?);""", store)
+            connection.commit()
+        
+        list_food = Food()
+        for food in list_food.list_food:
+            cursor.execute("""INSERT INTO Category(id_food, name_food, nutriscore, urlOFF, category, store) VALUES(?);""", food)
+            connection.commit()
 
     except mysql.connector.Error as error:
         print(error)
