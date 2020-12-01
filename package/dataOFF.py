@@ -1,11 +1,13 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
 import json
 
+import requests
 
 class DataOFF:
+    """[summary]
+    """
     def __init__(self, url):
         self.CRITERIAS = ["categories", "product_name_fr", "nutriscore_grade_fr", "url", "stores"]
         self.url = url

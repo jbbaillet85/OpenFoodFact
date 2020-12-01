@@ -10,7 +10,7 @@ import store
 def main():
 
 
-    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "")
+    connection = mysql.connector.connect(host = "localhost", database = "eat_well.db", user = "user", password = "")
 
     cursor = connection.cursor()
 

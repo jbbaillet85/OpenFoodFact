@@ -5,36 +5,45 @@ import requests
 import json
 
 class Category:
+    LIST_CATEGORY = ["Boissons", "Desserts", "Epicerie", "Pizzas","Produits laitiers"]
+    URL_CATEGORYS = "https://fr.openfoodfacts.org/categories.json"
+    reponse = requests.get(URL_CATEGORYS)
+    data = reponse.json()
+
     def __init__(self):
-        self.LIST_CATEGORY = ["Boissons", "Desserts", "Epicerie", "Pizzas","Produits laitiers"]
-        self.url = "https://fr.openfoodfacts.org/categories.json"
-        self.list_name_category = []
-        self.list_urljson_category = []
-        self.reponse = requests.get(self.url)
-        self.data = self.reponse.json()
-        self.list_category = self.get_category()
+        self.name_category = str
+        self.list_urljson_category = self.get_category()
+        self.dict_category = {self.name_category : self.list_urljson_category}
+        self.list_category = self.get_list_category()
     
     def get_category(self):
-        self.list_category = []
-        for category_selec in self.LIST_CATEGORY:
-            for category in self.data.get("tags"):
+        list_urljson_category = []
+        for category_selec in Category.LIST_CATEGORY:
+            for category in Category.data.get("tags"):
                 if category_selec == category.get("name"):
-                    self.list_category.append([
-                        category.get("name"),
-                        category.get("url")])
-                    self.list_name_category.append(category.get("name"))
+                    self.name_category = category_selec
                     compteur_pages = 0
                     while compteur_pages < 4:
                         urljson = category.get("url") +"/"+ str(compteur_pages) +".json"
-                        self.list_urljson_category.append(urljson)
+                        list_urljson_category.append(urljson)
                         compteur_pages +=1
-        return self.list_category
+        return list_urljson_category
+    
+    def get_list_category(self):
+        list_category = []
+        i = 0
+        for category in Category.LIST_CATEGORY:
+            category_dict = {category : self.get_category()}
+            list_category.append(category_dict)
+            i +=1 
+            return list_category
     
     def insert_category_table(self):
         pass
 
 if __name__ == "__main__":
     category = Category()
-    print(category.list_category)
     print(category.list_urljson_category)
-    print(category.list_name_category)
+    #print(category.dict_category)
+    print(category.list_category)
+
