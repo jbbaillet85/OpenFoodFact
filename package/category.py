@@ -43,7 +43,7 @@ class Category:
 
 if __name__ == "__main__":
     category = Category()
-    print(category.list_urljson_category)
-    #print(category.dict_category)
-    print(category.list_category)
+    #print(category.list_urljson_category)
+    print(category.dict_category)
+    #print(category.list_category)
 

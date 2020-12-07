@@ -10,11 +10,15 @@ import store
 def main():
 
 
-    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "")
+    connection = mysql.connector.connect(host = "localhost", user = "root", password = "iotabeta85")
 
     cursor = connection.cursor()
 
     try:
+
+        cursor.execute("""CREAT DATABASE IF NOT EXISTS eat_well""")
+
+        cursor.execute("""USE eat_well""")
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS Category (
         category_id SMALLINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -48,17 +52,19 @@ def main():
 
         list_category = Category()
         for category in list_category.LIST_CATEGORY:
-            cursor.execute("""INSERT INTO Category(category_name) VALUES(?);""", category)
+            cursor.execute("""INSERT INTO Category(category_name)
+            VALUES(?);""", category)
             connection.commit()
         
         list_store = Store()
         for store in list_store.list_store:
-            cursor.execute("""INSERT INTO Category(store_id, store_name) VALUES(?);""", store)
+            cursor.execute("""INSERT INTO Category(store_name) VALUES(?);""", store)
             connection.commit()
         
         list_food = Food()
         for food in list_food.list_food:
-            cursor.execute("""INSERT INTO Category(id_food, name_food, nutriscore, urlOFF, category, store) VALUES(?);""", food)
+            cursor.execute("""INSERT INTO Category(name_food, nutriscore, urlOFF, category, store)
+            VALUES(%(name_food)s, %(nutriscore)s, %(urlOFF)s, %(category)s, %(store)s);""", food)
             connection.commit()
 
     except mysql.connector.Error as error:
