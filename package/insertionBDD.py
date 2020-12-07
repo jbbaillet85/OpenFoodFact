@@ -10,14 +10,13 @@ import store
 def main():
 
 
-    connection = mysql.connector.connect(host = "localhost", database = "eat_well.db", user = "user", password = "")
+    connection = mysql.connector.connect(host = "localhost", database = "eat_well", user = "root", password = "")
 
     cursor = connection.cursor()
 
     try:
 
-        cursor.execute("""(
-        CREATE TABLE IF NOT EXISTS Category (
+        cursor.execute("""CREATE TABLE IF NOT EXISTS Category (
         category_id SMALLINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
         category_name VARCHAR(12) NOT NULL)
         ENGINE = InnoDB;""")
@@ -32,10 +31,10 @@ def main():
         name_food VARCHAR(20) NOT NULL,
         nutriscore VARCHAR(1) NOT NULL,
         urlOFF TEXT(100) NOT NULL,
-        category VARCHAR(12) NOT NULL,
-        store VARCHAR(20),
-        CONSTRAINT fk_category_name FOREIGN KEY (category) REFERENCES Category(category_name),
-        CONSTRAINT fk_store_name FOREIGN KEY (store) REFERENCES Store(store_name))
+        category SMALLINT NOT NULL,
+        store SMALLINT,
+        CONSTRAINT fk_category_id FOREIGN KEY (category) REFERENCES Category(category_id),
+        CONSTRAINT fk_store_id FOREIGN KEY (store) REFERENCES Store(store_id))
         ENGINE=InnoDB;""")
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS Substitute(
@@ -70,4 +69,14 @@ def main():
         cursor.close()
 
 if __name__ == "__main__":
-    main()
+    print("""Lancer le serveur mysql avec votre terminal:
+    windows: ./mysqld.exe --console
+    linux/mac: sudo service mysql start""")
+
+    print("""Connecter vous au client avec un nouveau terminal:
+    windows: /mysql.exe -u root -p
+    linux/mac: sudo mysql -u root -p""")
+
+    reponse_user = input("Avez vous lancé le serveur et le client y/n: ")
+    if reponse_user == "y":
+        main()
