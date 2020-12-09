@@ -6,35 +6,38 @@ import json
 import requests
 
 from category import *
-
-category = Category()
+from dataOFF import *
 
 class Food:
-    def __init__(self):
-        self.id = int
+    def __init__(self, name_category):
         self.name_food = str
-        self.name_category = str
+        self.name_category = name_category
         self.nutriscore = str
         self.name_store = str
         self.url = str
-        self.list_category = category.list_urljson_category
+        self.list_urljson_category = self.get_category()
         self.list_food = self.get_food()
     
+    def get_category(self):
+        return Category(self.name_category).list_urljson_category
+
     def get_food(self):
         list_food = []
-        for category in self.list_category:
+        for category in self.list_urljson_category:
             category_reponse = requests.get(category)
             category_data = category_reponse.json()
             for product in category_data.get("products"):
-                    list_food.append(({
-                    "name_food" : product.get("product_name"),
+                    list_food.append(({self.name_category :
+                    {"name_food" : product.get("product_name"),
                     "nutriscore" : product.get("nutriscore_grade"),
                     "url" : product.get("url"),
                     "name_category" : product.get("categories"),
-                    "name_store" : product.get("stores")}))
+                    "name_store" : product.get("stores")}
+                    }))
         return list_food
 
+
 if __name__ == "__main__":
-    pizzaRoyale = Food()
-    print(pizzaRoyale.list_category)
-    print(pizzaRoyale.list_food[0:3])
+    boissons = Food("Boissons")
+    #print(boissons.list_urljson_category)
+    print(boissons.list_food)

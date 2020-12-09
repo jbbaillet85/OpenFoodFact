@@ -50,7 +50,7 @@ def main():
 
         connection.commit()
 
-        list_category = Category()
+        list_category = Category("Boissons")
         for category in list_category.LIST_CATEGORY:
             cursor.execute("""INSERT INTO Category(category_name)
             VALUES(?);""", category)
