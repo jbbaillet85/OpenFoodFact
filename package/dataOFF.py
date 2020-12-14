@@ -5,7 +5,9 @@ import json
 
 import requests
 
-from constants import CRITERIAS
+import mysql.connector
+
+from constants import CRITERIAS, URL_CATEGORYS, LIST_CATEGORY
 
 class DataOFF:
     """[summary]
@@ -24,6 +26,7 @@ class DataOFF:
                 food.append({critere : product.get(critere)})
             list_food.append(food)
         return list_food
+
     
 if __name__ == "__main__":
     pizzas = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")

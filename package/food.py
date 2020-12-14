@@ -38,6 +38,9 @@ class Food:
 
 
 if __name__ == "__main__":
-    boissons = Food("Boissons")
-    #print(boissons.list_urljson_category)
-    print(boissons.list_food)
+    list_foods_all = []
+    for cat in LIST_CATEGORY:
+        food = Food(cat)
+        foods = food.list_food
+        list_foods_all.extend(foods)
+    print(list_foods_all)

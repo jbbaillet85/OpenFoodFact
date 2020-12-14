@@ -5,12 +5,14 @@ import requests
 
 from category import *
 
-category = Category()
+from constants import LIST_CATEGORY
+
 
 class Store:
-    def __init__(self):
+    def __init__(self, name_category):
         self.name_store = str
-        self.list_category = category.list_urljson_category
+        self.name_category = Category(name_category)
+        self.list_category = self.name_category.list_urljson_category
         self.list_stores = self.get_store()
     
     def get_store(self):
@@ -19,10 +21,16 @@ class Store:
             category_reponse = requests.get(category)
             category_data = category_reponse.json()
             for store in category_data.get("products"):
-                    self.name_store = store.get("stores")
-                    list_store.append(self.name_store)
+                name_store = store.get("stores")
+                if name_store is not None:
+                    names_stores = name_store.split(",")
+                    list_store.extend(names_stores)
         return set(list_store)
 
 if __name__ == "__main__":
-    store = Store()
+    list_stores_all = []
+    for cat in LIST_CATEGORY:
+        store = Store(cat)
+        stores = store.list_stores
+        list_stores_all.extend(stores)
     print(store.list_stores)
