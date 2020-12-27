@@ -27,7 +27,6 @@ class DataOFF:
             list_food.append(food)
         return list_food
 
-    
 if __name__ == "__main__":
     pizzas = DataOFF("https://fr.openfoodfacts.org/categorie/pizzas-royales/1.json")
     print(pizzas.list_food)
