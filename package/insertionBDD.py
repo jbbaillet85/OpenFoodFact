@@ -37,9 +37,15 @@ class InsertionBDD:
             self.connexion_db.commit()
             cursor.close()
     
-    def purge_tables(self):
+    def purge_tables(self, category_id):
         cursor = self.connexion_db.cursor()
-        #purger les category, trunkey reset les données
+        query_select = f"SELECT * FROM Food WHERE category = '{category_id}'"
+        cursor.execute(query_select)
+        select_cat = cursor.fetchall()
+        query_delete = f"DELETE FROM Food WHERE category = '{category_id}'"
+        cursor.execute(query_delete)
+        self.connexion_db.commit()
+        cursor.close()
     
     def insert_category(self, list_category):
         cursor = self.connexion_db.cursor()
@@ -56,11 +62,13 @@ class InsertionBDD:
     def insert_store(self, list_store):
         cursor = self.connexion_db.cursor()
         for product in list_store:
+            #verifie si le store est dans la base
             query_select = f"SELECT * FROM Store WHERE store_name = '{product}'"
             cursor.execute(query_select)
             if cursor.rowcount == -1:
                 cursor.fetchall()
             if cursor.rowcount == 0:
+                #inserer le store dans la base
                 query_insert = f"INSERT INTO Store (store_name) VALUES ('{product}')"
                 cursor.execute(query_insert)
                 self.connexion_db.commit()
@@ -68,8 +76,11 @@ class InsertionBDD:
     def insert_food(self, list_food):
         cursor = self.connexion_db.cursor()
         for product in list_food:
+            #modifier food_name erreure 'orange''
+            food_name = str(product[0])
+            food_name = food_name.replace("'","''")
             #verifie si food_name est dans la base
-            query_select = f"SELECT * FROM Food WHERE food_name = '{product[0]}'"
+            query_select = f"SELECT * FROM Food WHERE food_name = '{food_name}'"
             cursor.execute(query_select)
             # si pas dans bdd -1 ou 0
             if cursor.rowcount == -1:
@@ -87,9 +98,10 @@ class InsertionBDD:
                 store_id = store_id[0]
                 # inserer les données
                 query_insert = f"""INSERT INTO Food (food_name, food_nutriscore, food_urlOFF, category, store)
-                VALUES ('{product[0]}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
+                VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
                 cursor.execute(query_insert)
                 self.connexion_db.commit()
+        cursor.close()
 
 if __name__ == "__main__":
     print("""
@@ -108,4 +120,3 @@ if __name__ == "__main__":
     mysql1.insert_store(stores_all.list_stores_all)
     foods_all = Food_all()
     mysql1.insert_food(foods_all.list_food_all)
-    print(mysql1.insert_food())

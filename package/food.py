@@ -23,17 +23,42 @@ class Food:
 
     def get_food(self):
         list_food = []
+        product_content = []
         for category in self.list_urljson_category:
             category_reponse = requests.get(category)
             category_data = category_reponse.json()
             for product in category_data.get("products"):
-                    list_food.append((
+                    product_content.append((
                     product.get("product_name"),
                     product.get("nutriscore_grade"),
                     product.get("url"),
                     self.name_category,
                     product.get("stores")))
+                    list_food.extend(product_content)
         return list_food
+
+class Food_content:
+    def __init__(self, category_name):
+        self.food_name = str
+        self.food_nutriscore = str
+        self.food_urlOFF = str
+        self.name_category = category_name
+        self.store = str
+        self.food_content = [self.food_name, self.food_nutriscore, self.food_urlOFF, self.name_category, self.store]
+
+    def get_food_content(self, url):
+        for category in url:
+            category_reponse = requests.get(category)
+            category_data = category_reponse.json()
+            for product in category_data.get("products"):
+                self.food_name = product.get("product_name"),
+                self.food_nutriscore = product.get("nutriscore_grade"),
+                self.food_urlOFF = product.get("url"),
+                self.name_category,
+                self.store = product.get("stores")
+
+
+
 
 class Food_all:
     def __init__(self):
