@@ -3,7 +3,7 @@
 
 import requests
 
-from category import *
+from category import Category, Category_all
 
 from constants import LIST_CATEGORY
 
@@ -23,6 +23,7 @@ class Store:
             category_data = category_reponse.json()
             for store in category_data.get("products"):
                 name_store = store.get("stores")
+                name_store = str(name_store).replace("'","''")
                 list_store.append(name_store)
         return list_store
 
@@ -31,13 +32,16 @@ class Stores_all:
         self.list_stores_all = self.get_list_stores_all()
     
     def get_list_stores_all(self):
-        self.list_stores_all = []
+        list_stores_all = []
         for cat in LIST_CATEGORY:
             store = Store(cat)
             stores = store.list_stores
-            self.list_stores_all.extend(stores)
-        return self.list_stores_all
+            list_stores_all.extend(stores)
+        return list_stores_all
 
 if __name__ == "__main__":
+    boissons_stores = Store("Boissons")
+    print(boissons_stores.name_store)
+    print(boissons_stores.list_stores)
     stores_all = Stores_all()
     print(stores_all.list_stores_all)

@@ -42,7 +42,7 @@ class InsertionBDD:
         query_select = f"SELECT * FROM Food WHERE category = '{category_id}'"
         cursor.execute(query_select)
         select_cat = cursor.fetchall()
-        query_delete = f"DELETE FROM Food WHERE category = '{category_id}'"
+        query_delete = f"TRUNCATE TABLE Food Substitute"
         cursor.execute(query_delete)
         self.connexion_db.commit()
         cursor.close()
@@ -120,3 +120,4 @@ if __name__ == "__main__":
     mysql1.insert_store(stores_all.list_stores_all)
     foods_all = Food_all()
     mysql1.insert_food(foods_all.list_food_all)
+    mysql1.purge_tables("5")
