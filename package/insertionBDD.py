@@ -62,8 +62,11 @@ class InsertionBDD:
     def insert_store(self, list_store):
         cursor = self.connexion_db.cursor()
         for product in list_store:
+            product = str(product)
+            product = product.replace("'","''")
             #verifie si le store est dans la base
             query_select = f"SELECT * FROM Store WHERE store_name = '{product}'"
+            print(query_select)
             cursor.execute(query_select)
             if cursor.rowcount == -1:
                 cursor.fetchall()
@@ -92,7 +95,9 @@ class InsertionBDD:
                 category_id = cursor.fetchone()
                 category_id = category_id[0]
                 #récupérer l'id de store
-                query_select_store = f"SELECT store_id from Store WHERE store_name = '{product[4]}'"
+                store_name = str(product[4]).replace("'","''")
+                query_select_store = f"SELECT store_id from Store WHERE store_name = '{store_name}'"
+                print(query_select_store)
                 cursor.execute(query_select_store)
                 store_id = cursor.fetchone()
                 store_id = store_id[0]
