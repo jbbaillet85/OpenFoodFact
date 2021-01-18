@@ -10,13 +10,13 @@ from category import Category, LIST_CATEGORY
 
 class Food:
     def __init__(self, name_category):
-        self.name_food = str
+        self.name_food = str.replace("'","''")
         self.name_category = name_category
         self.nutriscore = str
         self.name_store = str
         self.url = str
 
-class Food_manager:
+class FoodManager:
     def __init__(self, category_name):
         self.name_category = category_name
         self.list_urljson_category = self.get_category()
@@ -24,6 +24,10 @@ class Food_manager:
 
     def get_category(self):
         return Category(self.name_category).list_urljson_category
+    
+    def nutriscore_valide(self, nutriscore):
+        if nutriscore != "Nonne":
+            return nutriscore
 
     def get_food(self):
         list_food = []
@@ -31,7 +35,9 @@ class Food_manager:
         for category in self.list_urljson_category:
             category_reponse = requests.get(category)
             category_data = category_reponse.json()
+            #si le nutriscore est différent de nonne, alors ajouter à product_centent
             for product in category_data.get("products"):
+                if product.get("nutriscore_grade") != None:
                     product_content.append((
                     product.get("product_name"),
                     product.get("nutriscore_grade"),
@@ -49,7 +55,7 @@ class Food_all:
     def get_list_food_all(self):
         list_foods_all = []
         for cat in LIST_CATEGORY:
-            food = Food_manager(cat)
+            food = FoodManager(cat)
             foods = food.list_food
             list_foods_all.extend(foods)
         return list_foods_all

@@ -37,15 +37,19 @@ class InsertionBDD:
             self.connexion_db.commit()
             cursor.close()
     
-    def purge_tables(self, category_id):
-        cursor = self.connexion_db.cursor()
-        query_select = f"SELECT * FROM Food WHERE category = '{category_id}'"
-        cursor.execute(query_select)
-        select_cat = cursor.fetchall()
-        query_delete = f"TRUNCATE TABLE Food Substitute"
-        cursor.execute(query_delete)
-        self.connexion_db.commit()
-        cursor.close()
+    def purge_tables(self):
+        list_tables = ["Substitute","Food","Category", "Store"]
+        for table in list_tables:
+            cursor = self.connexion_db.cursor()
+            #suprimer les contraintes puis les recréer
+            query_delete_contraintes = f"SET FOREIGN_KEY_CHECKS = 0"
+            query_delete = f"TRUNCATE TABLE {table}"
+            query_create_contraintes = f"SET FOREIGN_KEY_CHECKS = 1"
+            cursor.execute(query_delete_contraintes)
+            cursor.execute(query_delete)
+            cursor.execute(query_create_contraintes)
+            self.connexion_db.commit()
+            cursor.close()
     
     def insert_category(self, list_category):
         cursor = self.connexion_db.cursor()
@@ -92,15 +96,19 @@ class InsertionBDD:
                 category_id = cursor.fetchone()
                 category_id = category_id[0]
                 #récupérer l'id de store
-                query_select_store = f"SELECT store_id from Store WHERE store_name = '{product[4]}'"
+                id_store = str(product[4])
+                id_store = id_store.replace("'","''")
+                query_select_store = f"SELECT store_id from Store WHERE store_name = '{id_store}'"
                 cursor.execute(query_select_store)
                 store_id = cursor.fetchone()
                 store_id = store_id[0]
                 # inserer les données
-                query_insert = f"""INSERT INTO Food (food_name, food_nutriscore, food_urlOFF, category, store)
-                VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
-                cursor.execute(query_insert)
-                self.connexion_db.commit()
+                if product[1] != None:
+                    query_insert = f"""INSERT INTO Food (food_name, food_nutriscore, food_urlOFF, category, store)
+                    VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
+                    cursor.execute(query_insert)
+                    self.connexion_db.commit()
+                    print(product)
         cursor.close()
 
 if __name__ == "__main__":
@@ -115,9 +123,9 @@ if __name__ == "__main__":
     
     mysql1 = InsertionBDD("root", "", "localhost", "eat_well")
     mysql1.create_tables()
+    mysql1.purge_tables()
     mysql1.insert_category(LIST_CATEGORY)
     stores_all = Stores_all()
     mysql1.insert_store(stores_all.list_stores_all)
     foods_all = Food_all()
     mysql1.insert_food(foods_all.list_food_all)
-    mysql1.purge_tables("5")
