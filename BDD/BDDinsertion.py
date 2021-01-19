@@ -5,8 +5,8 @@ import mysql.connector
 
 from constants import LIST_CATEGORY
 
-from store import Store, Stores_all
-from food import Food_all
+from BDDstore import BDDstoresAll
+from BDDfood import BDDfoodAll
 
 class InsertionBDD:
     def __init__(self, user, password, host, database):
@@ -103,12 +103,11 @@ class InsertionBDD:
                 store_id = cursor.fetchone()
                 store_id = store_id[0]
                 # inserer les données
-                if product[1] != None:
-                    query_insert = f"""INSERT INTO Food (food_name, food_nutriscore, food_urlOFF, category, store)
-                    VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
-                    cursor.execute(query_insert)
-                    self.connexion_db.commit()
-                    print(product)
+                query_insert = f"""INSERT INTO Food (food_name, food_nutriscore, food_urlOFF, category, store)
+                VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
+                cursor.execute(query_insert)
+                self.connexion_db.commit()
+                print(product)
         cursor.close()
 
 if __name__ == "__main__":
@@ -125,7 +124,7 @@ if __name__ == "__main__":
     mysql1.create_tables()
     mysql1.purge_tables()
     mysql1.insert_category(LIST_CATEGORY)
-    stores_all = Stores_all()
+    stores_all = BDDstoresAll()
     mysql1.insert_store(stores_all.list_stores_all)
-    foods_all = Food_all()
+    foods_all = BDDfoodAll()
     mysql1.insert_food(foods_all.list_food_all)
