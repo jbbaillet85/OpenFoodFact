@@ -3,38 +3,28 @@
 
 import mysql.connector
 
-class Product:
-    def __init__(self, food_id):
+from connexionBDD import ConnexionBDD
+
+class Product(ConnexionBDD):
+    def __init__(self, food_id, user, password, host, database):
+        ConnexionBDD.__init__(self, user, password, host, database)
         self.food_id = food_id
-        #se connecter à la BDD
-        self.connexion_db = self.connect_db("root","","localhost","eat_well")
-        #commande sql pour récuperer les éléments composant le produit
         query_food_name = f"SELECT food_name FROM food WHERE food_id = {self.food_id}"
-        query_category_id = f"SELECT category_id FROM food WHERE food_id = {self.food_id}"
+        self.food_name = self.get_attribut_product(query_food_name)
+        query_category_id = f"SELECT category FROM food WHERE food_id = {self.food_id}"
+        self.category_id = self.get_attribut_product(query_category_id)
         query_food_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = {self.food_id}"
-        query_store_id = f"SELECT store_id FROM food WHERE food_id = {self.food_id}"
+        self.nutriscore = self.get_attribut_product(query_food_nutriscore)
+        query_store_id = f"SELECT store FROM food WHERE food_id = {self.food_id}"
+        self.store_id = self.get_attribut_product(query_store_id)
         query_urlOFF = f"SELECT food_urlOFF FROM food WHERE food_id = {self.food_id}"
-        #attributs du product:
-        self.food_name = self.get_food_element(query_food_name)
-        self.category_id = self.get_food_element(query_category_id)
-        self.nutriscore = self.get_food_element(query_food_nutriscore)
-        self.store_id = self.get_food_element(query_store_id)
-        self.url = self.get_food_element(query_urlOFF)
+        self.url = self.get_attribut_product(query_urlOFF)
 
-    def connect_db(self, user, password, host, database):
-        try:
-            connexion = mysql.connector.connect(user, password, host, database)
-            print("Vous êtes bien connecté")
-            return connexion
-        except mysql.connector.errors.ProgrammingError:
-            print("Vous n'êtes pas connecté")
-
-    def get_food_element(self, query):
-        cursor = self.connexion_db.cursor()
-        cursor.execute(query)
-        cursor.close()
-        return cursor.fetchall()
+    def get_attribut_product(self, query):
+        self.cursor.execute(query)
+        attribut_product = self.cursor.fetchone()
+        return attribut_product
 
 if __name__ == "__main__":
-    produit = Product("1")
-    print(produit.food_nutriscore)
+    produit = Product(1, "root", "","localhost","eat_well")
+    print(produit.nutriscore)
