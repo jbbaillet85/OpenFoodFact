@@ -4,7 +4,7 @@
 import requests
 import json
 
-from constants import LIST_CATEGORY
+from BDD.constants import LIST_CATEGORY
 
 class BDDcategory:
     reponse = requests.get("https://fr.openfoodfacts.org/categories.json")

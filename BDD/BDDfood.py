@@ -5,7 +5,7 @@ import json
 
 import requests
 
-from BDDcategory import *
+from BDD.BDDcategory import *
 
 
 class BDDfood:

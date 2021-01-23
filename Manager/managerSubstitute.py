@@ -3,26 +3,70 @@
 
 import mysql.connector
 
-from connexionBDD import ConnexionBDD
+from Manager.connexionBDD import ConnexionBDD
 
-class substitute(ConnexionBDD):
-    def __init__(self, id_substitute, user, password, host, database):
+class Substitute(ConnexionBDD):
+    def __init__(self, substituted_id, user, password, host, database):
         ConnexionBDD.__init__(self, user, password, host, database)
-        self.id_substitute = id_substitute
-        query_food_substitute = f"SELECT food_id, food_name FROM food WHERE food_id = {self.id_substitute}"
-        self.food_subtitute = self.get_attribut_substitute(query_food_substitute)
-        query_category_id = f"SELECT category FROM food WHERE food_id = {self.id_substitute}"
+        #recuperer l'id du produit à remplacer
+        self.substituted_id = substituted_id
+        #récuperer le food_name du produit à remplacer
+        query_substituted = f"SELECT food_name FROM food WHERE food_id = '{self.substituted_id}'"
+        self.substituted_name = self.get_attribut_substitute(query_substituted)
+        #recuperer l'id de la category du food_name à remplacer
+        query_category_id = f"SELECT category FROM food WHERE food_id = '{self.substituted_id}'"
         self.category_id = self.get_attribut_substitute(query_category_id)
-        query_comparaison = f"SELECT food_id, food_name FROM food, category WHERE category_id = '{self.category_id}' ORDER BY food_nutriscore LIMIT 1"
-        self.food_subtited = self.get_attribut_substitute(query_comparaison)
+        #recuperer l'id du substitut
+        query_comparaison = f"SELECT food_id FROM food WHERE category = '{self.category_id}' ORDER BY food_nutriscore LIMIT 1 OFFSET 2"
+        self.substitute_id = self.get_attribut_substitute(query_comparaison)
+        #recuperer le food_name du substitut:
+        query_get_subtitut_name = f"SELECT food_name FROM food WHERE food_id = '{self.substitute_id}'"
+        self.substitut_name = self.get_attribut_substitute(query_get_subtitut_name)
+        #recuperer l'url de substitute
+        query_get_substitut_url = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.substitute_id}'"
+        self.substitut_url = self.get_attribut_substitute(query_get_substitut_url)
+        #recuperer le store_id du substitut
+        query_get_store_id = f"SELECT store FROM food WHERE food_id = '{self.substitute_id}'"
+        self.substitut_store_id = self.get_attribut_substitute(query_get_store_id)
+        #recuperer le store_name du substitut
+        query_get_store_name = f"SELECT store_name FROM store WHERE store_id = '{self.substitut_store_id}'"
+        self.substitut_store_name = self.get_attribut_substitute(query_get_store_name)
     
     def get_attribut_substitute(self, query):
         self.cursor.execute(query)
         attribut_substitute = self.cursor.fetchone()
-        return attribut_substitute 
+        attribut_substitute = str(attribut_substitute)[1:-2]
+        return attribut_substitute
     
+    def print_substitute(self):
+        print(f"A la place du produit {self.substituted_name}, vous pouvez consommer le produit de substitution {self.substitut_name}")
+        print(f"La fiche web est à l'adresse {self.substitut_url}")
+        print(f"Vous pouvez acheter {self.substitut_name} chez {self.substitut_store_name}")
+    
+    def save_substitute(self):
+        save = input(f"Souhaitez vous enregistrer votre produit de substitution: {self.substitut_name} dans vos favoris? o/n : " )
+        if save == "o" or "O":
+            query_select = f"SELECT id_substited FROM substitute WHERE id_substited = '{self.substituted_id}'"
+            self.cursor.execute(query_select)
+            if self.cursor.rowcount == -1:
+                self.cursor.fetchall()
+            if self.cursor.rowcount == 0:
+                query_save = f"INSERT INTO Substitute (id_substitute, id_substited) VALUES ('{self.substitute_id}' , '{self.substituted_id}') "
+                self.cursor.execute(query_save)
+                self.connexion.commit()
+    
+    def print_favoris(self):
+        favoris = input(f"2-Retrouver mes aliments substitués: ")
+        if favoris == "2":
+            query_favoris = f"SELECT * FROM substitute"
+            self.cursor.execute(query_favoris)
+            favoris = self.cursor.fetchall()
+            for substitute in favoris:
+                print(f"Produit à remplacer: {self.substituted_name} par le")
+                print(f"Produit de substitution: {self.substitut_name} \n")
+
 if __name__ == "__main__":
-    substitute1 = substitute(45,"root","","localhost","eat_well")
+    substitute1 = Substitute(80,"root","","localhost","eat_well")
     print(f"category n° : {substitute1.category_id}")
-    print(substitute1.food_subtitute)
-    print(substitute1.food_subtited)
+    substitute1.save_substitute()
+    substitute1.print_favoris()

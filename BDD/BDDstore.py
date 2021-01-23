@@ -3,9 +3,9 @@
 
 import requests
 
-from BDDcategory import *
+from BDD.BDDcategory import *
 
-from constants import LIST_CATEGORY
+from BDD.constants import LIST_CATEGORY
 
 
 class BDDstore:

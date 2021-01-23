@@ -1,7 +1,7 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from connexionBDD import ConnexionBDD
+from Manager.connexionBDD import ConnexionBDD
 class Store(ConnexionBDD):
     def __init__(self, store_id, user, password, host, database):
         ConnexionBDD.__init__(self, user, password, host, database)

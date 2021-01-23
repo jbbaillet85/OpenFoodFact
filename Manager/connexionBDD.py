@@ -19,7 +19,6 @@ class ConnexionBDD:
                 password = self.password,
                 host = self.host,
                 database = self.database)
-            print("Vous êtes bien connecté")
             return connexion
         except mysql.connector.errors.ProgrammingError:
             print("Vous n'êtes pas connecté")

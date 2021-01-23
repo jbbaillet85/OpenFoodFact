@@ -20,6 +20,7 @@ CONSTRAINT fk_store_id FOREIGN KEY (store) REFERENCES Store(store_id))
 ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Substitute(
+substitute_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY
 id_substitute SMALLINT,
 id_substited SMALLINT,
 CONSTRAINT fk_substitute FOREIGN KEY(id_substitute) REFERENCES Food(food_id),

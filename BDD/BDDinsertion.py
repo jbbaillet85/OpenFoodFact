@@ -3,10 +3,10 @@
 
 import mysql.connector
 
-from constants import LIST_CATEGORY
+from BDD.constants import LIST_CATEGORY
 
-from BDDstore import BDDstoresAll
-from BDDfood import BDDfoodAll
+from BDD.BDDstore import BDDstoresAll
+from BDD.BDDfood import BDDfoodAll
 
 class InsertionBDD:
     def __init__(self, user, password, host, database):
@@ -31,7 +31,7 @@ class InsertionBDD:
     
     def create_tables(self):
         cursor = self.connexion_db.cursor()
-        with open("creat_tables.sql", "r") as file:
+        with open("BDD/creat_tables.sql", "r") as file:
             query = file.read()
             cursor.execute(query, multi=True)
             self.connexion_db.commit()
@@ -107,7 +107,6 @@ class InsertionBDD:
                 VALUES ('{food_name}','{product[1]}','{product[2]}','{category_id}','{store_id}')"""
                 cursor.execute(query_insert)
                 self.connexion_db.commit()
-                print(product)
         cursor.close()
 
 if __name__ == "__main__":
