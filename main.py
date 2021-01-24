@@ -34,14 +34,23 @@ if load_data == "o" or "O":
 print("\n Menus \n")
 # proposer les choix
 choice_menus = input("1-Quel aliment souhaitez-vous remplacer?\n2-Retrouver mes aliments substitués.\nchoix 1 ou 2: ")
+#while choice_menus != "1" or "2":
+#    print("Vous devez taper 1 ou 2 pour valider votre choix : ")
 if choice_menus == "1":
     choice_food = ManagerCategoryAll(6, user, password, host, database)
-    choice_category = ManagerCategory(choice_food, user, password, host, database)
+    choice_category = ManagerCategory(choice_food.choice_category, user, password, host, database)
+
     choice_product = Product(choice_category, user, password, host, database)
-    favoris = Substitute(choice_product, user, password, host, database)
+
+    favoris = Substitute(choice_product.choice_product, user, password, host, database)
     favoris.print_substitute()
     favoris.save_substitute()
 elif choice_menus == "2":
     favoris = Substitute(1, user, password, host, database)
     favoris.print_favoris()
 
+quit_programme = input("Souhaitez-vous quitter l'aplication Bien Manger? o/n")
+if quit_programme == "o" or "O":
+    #méthode pour quitter le programme
+else:
+    #retourner au menus

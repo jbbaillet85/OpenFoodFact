@@ -54,10 +54,9 @@ class Substitute(ConnexionBDD):
                 query_save = f"INSERT INTO Substitute (id_substitute, id_substited) VALUES ('{self.substitute_id}' , '{self.substituted_id}') "
                 self.cursor.execute(query_save)
                 self.connexion.commit()
+            print(f"Votre favoris {self.substitut_name} a bien été enregistré")
     
     def print_favoris(self):
-        favoris = input(f"2-Retrouver mes aliments substitués: ")
-        if favoris == "2":
             query_favoris = f"SELECT * FROM substitute"
             self.cursor.execute(query_favoris)
             favoris = self.cursor.fetchall()
