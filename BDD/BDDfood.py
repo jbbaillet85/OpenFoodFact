@@ -5,7 +5,7 @@ import json
 
 import requests
 
-from BDD.BDDcategory import *
+from BDD.BDDcategory import LIST_CATEGORY, BDDcategory
 
 
 class BDDfood:
@@ -16,10 +16,6 @@ class BDDfood:
 
     def get_category(self):
         return BDDcategory(self.name_category).list_urljson_category
-    
-    def nutriscore_valide(self, nutriscore):
-        if nutriscore != None:
-            return nutriscore
 
     def get_food(self):
         list_food = []
@@ -27,10 +23,9 @@ class BDDfood:
         for category in self.list_urljson_category:
             category_reponse = requests.get(category)
             category_data = category_reponse.json()
-            #si le nutriscore est différent de None, alors ajouter à product_centent
             for product in category_data.get("products"):
-                if product.get("nutriscore_grade") != None:
-                    if product.get("stores") != None:
+                if product.get("nutriscore_grade") is not None:
+                    if product.get("stores") is not None:
                         if product.get("stores") != '':
                             product_content.append((
                             product.get("product_name"),
@@ -45,7 +40,7 @@ class BDDfood:
 class BDDfoodAll:
     def __init__(self):
         self.list_food_all = self.get_list_food_all()
-    
+
     def get_list_food_all(self):
         list_foods_all = []
         for cat in LIST_CATEGORY:
@@ -53,6 +48,7 @@ class BDDfoodAll:
             foods = food.list_food
             list_foods_all.extend(foods)
         return list_foods_all
+
 
 if __name__ == "__main__":
     food_all = BDDfoodAll()

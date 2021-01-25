@@ -1,7 +1,7 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-LIST_CATEGORY = ["Boissons", "Desserts", "Epicerie", "Pizzas","Produits laitiers"]
+LIST_CATEGORY = ["Boissons", "Desserts", "Epicerie", "Pizzas", "Produits laitiers"]
 
 CRITERIAS = ["product_name_fr", "nutriscore_grade_fr", "url", "categories", "stores"]
 

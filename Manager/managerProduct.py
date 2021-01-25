@@ -5,6 +5,7 @@ import mysql.connector
 
 from Manager.connexionBDD import ConnexionBDD
 
+
 class Product(ConnexionBDD):
     def __init__(self, food_id, user, password, host, database):
         ConnexionBDD.__init__(self, user, password, host, database)
@@ -13,7 +14,7 @@ class Product(ConnexionBDD):
         self.food_name = self.get_attribut_product(query_food_name)
         query_category_id = f"SELECT category FROM food WHERE food_id = '{self.food_id}'"
         self.category_id = self.get_attribut_product(query_category_id)
-        #recuperer category_name
+        # recuperer category_name
         query_category_name = f"SELECT category_name FROM category WHERE category_id = '{self.category_id}'"
         self.category_name = self.get_attribut_product(query_category_name)
         query_food_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.food_id}'"
@@ -22,14 +23,12 @@ class Product(ConnexionBDD):
         self.store_id = self.get_attribut_product(query_store_id)
         query_urlOFF = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.food_id}'"
         self.url = self.get_attribut_product(query_urlOFF)
-        #récuperer tous les products_id et product_name
-        category_id = input("Confirmer la categorie : ")        
+        # récuperer tous les products_id et product_name
+        category_id = input("Confirmer la categorie : ")
         query_category_name_products = f"SELECT category_name FROM category WHERE category_id = '{category_id}'"
         self.category_name_products = self.get_attribut_product(query_category_name_products)
-        query_product_all = f"SELECT food_id, food_name FROM food WHERE category = '{category_id}'"
+        query_product_all = f"SELECT food_id, food_nutriscore, food_name FROM food WHERE category = '{category_id}'"
         self.product_all = self.get_attribut_product(query_product_all)
-
-        #query_choice_product = f"SELECT category_name FROM category WHERE category_id = {}"
         self.choice_product = self.get_choice_product()
 
     def get_attribut_product(self, query):
@@ -37,19 +36,22 @@ class Product(ConnexionBDD):
         attribut_product = self.cursor.fetchall()
         attribut_product = str(attribut_product)[1:-1]
         return attribut_product
-    
+
     def print_product(self):
         return f"#id {self.food_id} : *{self.food_name}*"
-    
+
     def get_choice_product(self):
         print(f"**{self.category_name_products}**")
-        product = (f"{self.product_all}".split("),"))
+        product = f"{self.product_all}".split("),")
         for product_id in product:
             print(product_id)
         choice_product = input(f"Selectionner votre {self.category_name_products}: ")
+        while not choice_product.isdigit():
+            print("Rentrez un chiffre: ")
+            choice_product = input("Rentrer le chiffre du produit: ")
         return choice_product
 
 
 if __name__ == "__main__":
-    produit = Product(1, "root", "","localhost","eat_well")
+    produit = Product(1, "root", "", "localhost", "eat_well")
     produit.get_choice_product()
