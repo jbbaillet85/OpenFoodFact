@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import mysql.connector
-
 from Manager.connexionBDD import ConnexionBDD
 
 
@@ -11,31 +9,25 @@ class Product(ConnexionBDD):
         ConnexionBDD.__init__(self, user, password, host, database)
         self.food_id = food_id
         query_food_name = f"SELECT food_name FROM food WHERE food_id = '{self.food_id}'"
-        self.food_name = self.get_attribut_product(query_food_name)
+        self.food_name = self.get_attribut(query_food_name)
         query_category_id = f"SELECT category FROM food WHERE food_id = '{self.food_id}'"
-        self.category_id = self.get_attribut_product(query_category_id)
+        self.category_id = self.get_attribut(query_category_id)
         # recuperer category_name
         query_category_name = f"SELECT category_name FROM category WHERE category_id = '{self.category_id}'"
-        self.category_name = self.get_attribut_product(query_category_name)
+        self.category_name = self.get_attribut(query_category_name)
         query_food_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.food_id}'"
-        self.nutriscore = self.get_attribut_product(query_food_nutriscore)
+        self.nutriscore = self.get_attribut(query_food_nutriscore)
         query_store_id = f"SELECT store FROM food WHERE food_id = '{self.food_id}'"
-        self.store_id = self.get_attribut_product(query_store_id)
+        self.store_id = self.get_attribut(query_store_id)
         query_urlOFF = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.food_id}'"
-        self.url = self.get_attribut_product(query_urlOFF)
+        self.url = self.get_attribut(query_urlOFF)
         # récuperer tous les products_id et product_name
         category_id = input("Confirmer la categorie : ")
         query_category_name_products = f"SELECT category_name FROM category WHERE category_id = '{category_id}'"
-        self.category_name_products = self.get_attribut_product(query_category_name_products)
+        self.category_name_products = self.get_attribut(query_category_name_products)
         query_product_all = f"SELECT food_id, food_nutriscore, food_name FROM food WHERE category = '{category_id}'"
-        self.product_all = self.get_attribut_product(query_product_all)
+        self.product_all = self.get_attribut(query_product_all)
         self.choice_product = self.get_choice_product()
-
-    def get_attribut_product(self, query):
-        self.cursor.execute(query)
-        attribut_product = self.cursor.fetchall()
-        attribut_product = str(attribut_product)[1:-1]
-        return attribut_product
 
     def print_product(self):
         return f"#id {self.food_id} : *{self.food_name}*"

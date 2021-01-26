@@ -9,13 +9,7 @@ class Store(ConnexionBDD):
         ConnexionBDD.__init__(self, user, password, host, database)
         self.store_id = store_id
         query_store_name = f"SELECT store_name FROM store WHERE store_id = {self.store_id}"
-        self.store_name = self.get_attribut_store(query_store_name)
-
-    def get_attribut_store(self, query):
-        self.cursor.execute(query)
-        attribut_store = self.cursor.fetchone()
-        self.cursor.close()
-        return attribut_store
+        self.store_name = self.get_attribut(query_store_name)
 
 
 if __name__ == "__main__":

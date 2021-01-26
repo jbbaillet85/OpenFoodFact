@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-import mysql.connector
-
 from Manager.connexionBDD import ConnexionBDD
 from BDD.constants import LIST_CATEGORY
 
@@ -12,14 +10,8 @@ class ManagerCategory(ConnexionBDD):
     def __init__(self, id, user, password, host, database):
         ConnexionBDD.__init__(self, user, password, host, database)
         self.id = id
-        self.category_name = self.get_category_name()
-
-    def get_category_name(self):
         query = f"SELECT category_name FROM category WHERE category_id = {self.id}"
-        self.cursor.execute(query)
-        category_name = self.cursor.fetchone()
-        category_name = str(category_name)[1:-2]
-        return category_name
+        self.category_name = self.get_attribut(query)
 
     def print_category(self):
         return f"{self.id} : {self.category_name}"

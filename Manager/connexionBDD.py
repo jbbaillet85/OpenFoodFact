@@ -3,6 +3,7 @@
 
 import mysql.connector
 
+
 class ConnexionBDD:
     def __init__(self, user, password, host, database):
         self.user = user
@@ -15,13 +16,20 @@ class ConnexionBDD:
     def connect_db(self):
         try:
             connexion = mysql.connector.connect(
-                user = self.user,
-                password = self.password,
-                host = self.host,
-                database = self.database)
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                database=self.database)
             return connexion
         except mysql.connector.errors.ProgrammingError:
             print("Vous n'êtes pas connecté")
+
+    def get_attribut(self, query):
+        self.cursor.execute(query)
+        attribut = self.cursor.fetchall()
+        attribut = str(attribut)[1:-1]
+        return attribut
+
 
 if __name__ == "__main__":
     connexion = ConnexionBDD("root", "", "localhost", "eat_well")

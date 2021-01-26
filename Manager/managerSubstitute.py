@@ -1,50 +1,42 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import mysql.connector
 
 from Manager.connexionBDD import ConnexionBDD
+
 
 class Substitute(ConnexionBDD):
     def __init__(self, substituted_id, user, password, host, database):
         ConnexionBDD.__init__(self, user, password, host, database)
-        #recuperer l'id du produit à remplacer
+        # attributs substituted
         self.substituted_id = substituted_id
-        #récuperer le food_name du produit à remplacer
         query_substituted = f"SELECT food_name FROM food WHERE food_id = '{self.substituted_id}'"
-        self.substituted_name = self.get_attribut_substitute(query_substituted)
-        #recuperer l'id de la category du food_name à remplacer
+        self.substituted_name = self.get_attribut(query_substituted)
+        # attribut category_id du substituted
         query_category_id = f"SELECT category FROM food WHERE food_id = '{self.substituted_id}'"
-        self.category_id = self.get_attribut_substitute(query_category_id)
-        #recuperer l'id du substitut
-        query_comparaison = f"SELECT food_id FROM food WHERE category = '{self.category_id}' ORDER BY food_nutriscore LIMIT 1 OFFSET 2"
-        self.substitute_id = self.get_attribut_substitute(query_comparaison)
-        #recuperer le food_name du substitut:
+        self.category_id = self.get_attribut(query_category_id)[1:-2]
+        query_category_name = f"SELECT category_name FROM category WHERE category_id = '{self.category_id}'"
+        self.category_name = self.get_attribut(query_category_name)
+        # attributs du substitut
+        query_comparaison = f"SELECT food_id FROM food WHERE category = '{self.category_id}' ORDER BY food_nutriscore LIMIT 1"
+        self.substitute_id = self.get_attribut(query_comparaison)[1:-2]
         query_get_subtitut_name = f"SELECT food_name FROM food WHERE food_id = '{self.substitute_id}'"
-        self.substitut_name = self.get_attribut_substitute(query_get_subtitut_name)
-        #recuperer l'url de substitute
+        self.substitut_name = self.get_attribut(query_get_subtitut_name)
         query_get_substitut_url = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.substitute_id}'"
-        self.substitut_url = self.get_attribut_substitute(query_get_substitut_url)
-        #recuperer le store_id du substitut
+        self.substitut_url = self.get_attribut(query_get_substitut_url)
         query_get_store_id = f"SELECT store FROM food WHERE food_id = '{self.substitute_id}'"
-        self.substitut_store_id = self.get_attribut_substitute(query_get_store_id)
-        #recuperer le store_name du substitut
+        self.substitut_store_id = self.get_attribut(query_get_store_id)[1:-2]
         query_get_store_name = f"SELECT store_name FROM store WHERE store_id = '{self.substitut_store_id}'"
-        self.substitut_store_name = self.get_attribut_substitute(query_get_store_name)
+        self.substitut_store_name = self.get_attribut(query_get_store_name)
         query_get_subtituted_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.substituted_id}'"
-        self.substituted_nutriscore = self.get_attribut_substitute(query_get_subtituted_nutriscore)
+        self.substituted_nutriscore = self.get_attribut(query_get_subtituted_nutriscore)
         query_get_substitut_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.substitute_id}'"
-        self.substitut_nutriscore = self.get_attribut_substitute(query_get_substitut_nutriscore)
-
-    def get_attribut_substitute(self, query):
-        self.cursor.execute(query)
-        attribut_substitute = self.cursor.fetchone()
-        attribut_substitute = str(attribut_substitute)[1:-2]
-        return attribut_substitute
+        self.substitut_nutriscore = self.get_attribut(query_get_substitut_nutriscore)
 
     def print_substitute(self):
+        print(f"{self.category_id}-{self.category_name}")
         print(f"""A la place du produit {self.substituted_name} d'un nutriscore de {self.substituted_nutriscore},
-        vous pouvez consommer le produit de substitution {self.substitut_name} avec un nutriscore de {self.substitut_nutriscore}""")
+        vous pouvez consommer le produit de substitution {self.substitute_id}-{self.substitut_name} avec un nutriscore de {self.substitut_nutriscore}""")
         print(f"La fiche web est à l'adresse {self.substitut_url}")
         print(f"Vous pouvez acheter {self.substitut_name} chez {self.substitut_store_name}")
 
@@ -69,8 +61,17 @@ class Substitute(ConnexionBDD):
         print(favoris)
         for substitute in favoris:
             print(substitute)
-            print(f"Produit à remplacer: {self.substituted_name} par le")
-            print(f"Produit de substitution: {self.substitut_name} \n")
+            query_substituted = f"SELECT food_id, food_nutriscore, food_name FROM food WHERE food_id = '{substitute[0]}'"
+            substituted = self.get_attribut(query_substituted)
+            query_substitut = f"SELECT food_id, food_nutriscore, food_name, food_urlOFF FROM food WHERE food_id = '{substitute[1]}'"
+            substitut = self.get_attribut(query_substitut)
+            query_store_id = f"SELECT store FROM food WHERE food_id = '{substitute[1]}'"
+            store_id = self.get_attribut(query_store_id)[1:-1]
+            query_substitut_store_name = f"SELECT store_name FROM store WHERE store_id = '{store_id}'"
+            store_name = self.get_attribut(query_substitut_store_name)
+            print(f"Produit à remplacer: {substituted} par le")
+            print(f"Produit de substitution: {substitut}")
+            print(f"Vous pouvez acheter le produit chez {store_name}\n")
 
 
 if __name__ == "__main__":
