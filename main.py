@@ -10,7 +10,7 @@ print("**Bienvenus dans l'application Bien Manger**\n")
 
 print("\n Menus \n")
 # proposer les choix
-choice_menus = input("1-Quel aliment souhaitez-vous remplacer?\n2-Retrouver mes aliments substitués.\nchoix 1 ou 2: ")
+choice_menus = str
 while choice_menus != "1" or "2":
     if choice_menus != "1" or "2":
         print("Vous devez taper 1 ou 2 pour valider votre choix : ")

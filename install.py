@@ -6,16 +6,16 @@ from BDD.constants import LIST_CATEGORY
 from BDD.BDDinsertion import InsertionBDD, BDDfoodAll, BDDstoresAll
 
 print("**Bienvenus dans l'application Bien Manger**\n")
-# créer la base de donnée:
+# create the database:
 eat_well = InsertionBDD(user, password, host, database)
 eat_well.create_tables()
 
-# purger les tables:
+# purge tables:
 purge = input("Si vous souhaitez purger les tables, tapez p,\n sinon tapez la touche 'entrer' ")
 if purge == "p":
     eat_well.purge_tables()
 
-# inserer les données:
+# insert data:
 load_data = input("Souhaitez-vous télécharger les datas d'OpenFoodFact? o/n: ")
 if load_data == "o":
     print("Insertion des datas d'Openfoodfact en cours,\nmerci de patienter")

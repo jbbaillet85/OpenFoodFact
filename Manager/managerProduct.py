@@ -6,13 +6,22 @@ from Manager.connexionBDD import ConnexionBDD
 
 class Product(ConnexionBDD):
     def __init__(self, food_id, user, password, host, database):
+        """Class creating product objects from the Food table
+
+        Args:
+            food_id (int): product id
+            user (str): database username
+            password (str): database user password
+            host (str): name where the database is hosted
+            database (str): database name
+        """
         ConnexionBDD.__init__(self, user, password, host, database)
         self.food_id = food_id
         query_food_name = f"SELECT food_name FROM food WHERE food_id = '{self.food_id}'"
         self.food_name = self.get_attribut(query_food_name)
         query_category_id = f"SELECT category FROM food WHERE food_id = '{self.food_id}'"
         self.category_id = self.get_attribut(query_category_id)
-        # recuperer category_name
+        # get category_name
         query_category_name = f"SELECT category_name FROM category WHERE category_id = '{self.category_id}'"
         self.category_name = self.get_attribut(query_category_name)
         query_food_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.food_id}'"
@@ -21,7 +30,7 @@ class Product(ConnexionBDD):
         self.store_id = self.get_attribut(query_store_id)
         query_urlOFF = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.food_id}'"
         self.url = self.get_attribut(query_urlOFF)
-        # récuperer tous les products_id et product_name
+        # get all the products_id and product_name
         category_id = input("Confirmer la categorie : ")
         query_category_name_products = f"SELECT category_name FROM category WHERE category_id = '{category_id}'"
         self.category_name_products = self.get_attribut(query_category_name_products)
@@ -30,9 +39,19 @@ class Product(ConnexionBDD):
         self.choice_product = self.get_choice_product()
 
     def print_product(self):
+        """display product id and name
+
+        Returns:
+            str: product id and name
+        """
         return f"#id {self.food_id} : *{self.food_name}*"
 
     def get_choice_product(self):
+        """function retrieving the product id selected by the user
+
+        Returns:
+            str: the id selected by the user
+        """
         print(f"**{self.category_name_products}**")
         product = f"{self.product_all}".split("),")
         for product_id in product:

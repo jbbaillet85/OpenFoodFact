@@ -9,7 +9,7 @@ from BDD.constants import LIST_CATEGORY
 
 
 class BDDstore:
-
+    """classe retournant une liste de stores d'une category"""
     def __init__(self, name_category):
         self.name_category = BDDcategory(name_category)
         self.list_category = self.name_category.list_urljson_category
@@ -30,6 +30,7 @@ class BDDstore:
 
 
 class BDDstoresAll:
+    """classe retournant une liste des stores de toutes les categorys"""
     def __init__(self):
         self.list_stores_all = self.get_list_stores_all()
 
