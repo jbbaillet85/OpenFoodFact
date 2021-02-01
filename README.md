@@ -42,7 +42,7 @@ https://trello.com/b/umDBQG3F/bienmanger
 - mac/linux: *python3 -m venv env*
 
 3. Activer l'environnement virtuel:
-- windows: *source venv\Scripts\activate*
+- windows: *env\Scripts\activate*
 - mac/linux: *source/bin/activate*
 
 4. Installer les dépendances à partir du fichier [requirements.txt](requirements.txt)
@@ -61,8 +61,12 @@ https://trello.com/b/umDBQG3F/bienmanger
 
 8. Remplacer les valeurs du fichier [config.py](config.py) par les tiennes
 
-9. Lancer le fichier [install.py](install.py): "python install.py"
+9. Lancer le fichier [install.py](install.py):
+- windows: *python install.py*
+- mac/linux: "python3 install.py*
 
-10. Lancer le fichier [main.py](main.py): windows: "python main.py" mac/linux: "python3 main.py"
+10. Lancer le fichier [main.py](main.py):
+- windows: *python main.py*
+- mac/linux: *python3 main.py*
 
 11. Pour quitter le programme, tape le racourcis *ctrl* + *c*
