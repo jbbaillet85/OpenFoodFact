@@ -1,4 +1,4 @@
-![Github Logo][../pancake.jpg]
+![Github Logo](pancake.jpg)
 # OpenFoodFact
 Utilisez les données publiques de l'OpenFoodFact
 
