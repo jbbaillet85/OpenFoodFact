@@ -22,9 +22,11 @@ class Product(ConnexionBDD):
         query_category_id = f"SELECT category FROM food WHERE food_id = '{self.food_id}'"
         self.category_id = self.get_attribut(query_category_id)
         # get category_name
-        query_category_name = f"SELECT category_name FROM category WHERE category_id = '{self.category_id}'"
+        query_category_name = f"""SELECT category_name FROM category
+        WHERE category_id = '{self.category_id}'"""
         self.category_name = self.get_attribut(query_category_name)
-        query_food_nutriscore = f"SELECT food_nutriscore FROM food WHERE food_id = '{self.food_id}'"
+        query_food_nutriscore = f"""SELECT food_nutriscore FROM food
+        WHERE food_id = '{self.food_id}'"""
         self.nutriscore = self.get_attribut(query_food_nutriscore)
         query_store_id = f"SELECT store FROM food WHERE food_id = '{self.food_id}'"
         self.store_id = self.get_attribut(query_store_id)
@@ -32,9 +34,11 @@ class Product(ConnexionBDD):
         self.url = self.get_attribut(query_urlOFF)
         # get all the products_id and product_name
         category_id = input("Confirmer la categorie : ")
-        query_category_name_products = f"SELECT category_name FROM category WHERE category_id = '{category_id}'"
+        query_category_name_products = f"""SELECT category_name FROM category
+        WHERE category_id = '{category_id}'"""
         self.category_name_products = self.get_attribut(query_category_name_products)
-        query_product_all = f"SELECT food_id, food_nutriscore, food_name FROM food WHERE category = '{category_id}'"
+        query_product_all = f"""SELECT food_id, food_nutriscore, food_name FROM food
+        WHERE category = '{category_id}'"""
         self.product_all = self.get_attribut(query_product_all)
         self.choice_product = self.get_choice_product()
 

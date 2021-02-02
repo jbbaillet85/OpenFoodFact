@@ -43,32 +43,6 @@ class InsertionBDD:
         except mysql.connector.errors.ProgrammingError:
             print("Vous n'êtes pas connecté")
 
-    def create_tables(self):
-        """function creating the database tables
-        """
-        cursor = self.connexion_db.cursor()
-        with open("BDD/creat_tables.sql", "r") as file:
-            query = file.read()
-            cursor.execute(query, multi=True)
-            self.connexion_db.commit()
-            cursor.close()
-
-    def purge_tables(self):
-        """function purging data from tables
-        """
-        list_tables = ["Substitute", "Food", "Category", "Store"]
-        for table in list_tables:
-            cursor = self.connexion_db.cursor()
-            # remove the constraints then recreate them
-            query_delete_contraintes = "SET FOREIGN_KEY_CHECKS = 0"
-            query_delete = f"TRUNCATE TABLE {table}"
-            query_create_contraintes = "SET FOREIGN_KEY_CHECKS = 1"
-            cursor.execute(query_delete_contraintes)
-            cursor.execute(query_delete)
-            cursor.execute(query_create_contraintes)
-            self.connexion_db.commit()
-            cursor.close()
-
     def insert_category(self, list_category):
         """Function inserting the product category names in the Category table
 
@@ -90,7 +64,7 @@ class InsertionBDD:
         """function inserting the blinds in the Store table if they are not already there
 
         Args:
-            list_store (list): list of stores 
+            list_store (list): list of stores
         """
         cursor = self.connexion_db.cursor()
         for product in list_store:
@@ -109,7 +83,7 @@ class InsertionBDD:
         """function inserting the products in the Food table if they are not already there
 
         Args:
-            list_food (list): list of food 
+            list_food (list): list of food
         """
 
         cursor = self.connexion_db.cursor()

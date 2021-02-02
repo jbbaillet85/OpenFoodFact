@@ -3,17 +3,19 @@
 
 from config import user, password, host, database
 from BDD.constants import LIST_CATEGORY
+from BDD.BDDcreatTables import CreatTables
 from BDD.BDDinsertion import InsertionBDD, BDDfoodAll, BDDstoresAll
 
 print("**Bienvenus dans l'application Bien Manger**\n")
 # create the database:
+creat_tables = CreatTables(user, password, host, database)
+creat_tables.create_tables()
 eat_well = InsertionBDD(user, password, host, database)
-eat_well.create_tables()
 
 # purge tables:
 purge = input("Si vous souhaitez purger les tables, tapez p,\n sinon tapez la touche 'entrer' ")
 if purge == "p":
-    eat_well.purge_tables()
+    creat_tables.purge_tables()
 
 # insert data:
 load_data = input("Souhaitez-vous télécharger les datas d'OpenFoodFact? o/n: ")
