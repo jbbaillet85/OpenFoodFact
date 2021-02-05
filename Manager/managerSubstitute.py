@@ -31,7 +31,8 @@ class Substitute(ConnexionBDD):
         query_comparaison = f"""SELECT food_id FROM food
         WHERE category = '{self.category_id}' ORDER BY food_nutriscore LIMIT 1"""
         self.substitute_id = self.get_attribut(query_comparaison)[1:-2]
-        query_get_subtitut_name = f"""SELECT food_name FROM food WHERE food_id = '{self.substitute_id}'"
+        query_get_subtitut_name = f"""SELECT food_name FROM food
+        WHERE food_id = '{self.substitute_id}'"""
         self.substitut_name = self.get_attribut(query_get_subtitut_name)
         query_get_substitut_url = f"SELECT food_urlOFF FROM food WHERE food_id = '{self.substitute_id}'"
         self.substitut_url = self.get_attribut(query_get_substitut_url)
@@ -86,12 +87,12 @@ class Substitute(ConnexionBDD):
         for substitute in favoris:
             print(substitute)
             query_substituted = f"""SELECT food_id, food_nutriscore, food_name FROM food
-            WHERE food_id = '{substitute[0]}'"""
+            WHERE food_id = '{substitute[1]}'"""
             substituted = self.get_attribut(query_substituted)
             query_substitut = f"""SELECT food_id, food_nutriscore, food_name, food_urlOFF FROM food
-            WHERE food_id = '{substitute[1]}'"""
+            WHERE food_id = '{substitute[0]}'"""
             substitut = self.get_attribut(query_substitut)
-            query_store_id = f"SELECT store FROM food WHERE food_id = '{substitute[1]}'"
+            query_store_id = f"SELECT store FROM food WHERE food_id = '{substitute[0]}'"
             store_id = self.get_attribut(query_store_id)[1:-1]
             query_substitut_store_name = f"""SELECT store_name FROM store
             WHERE store_id = '{store_id}'"""
